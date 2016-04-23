@@ -14,7 +14,6 @@ To modify/test this service:
 2. Follow all the instructions in the "HOW-TO" document. The "COMO-HACER" file contains the instructions in Spanish.
 3. Copy all files and sub-folders from the "php" folder to a folder titled "noticias".
 4. It is also required to setup the RSS Aggregator server (developed in Java), you can instead use the service available at "apretaste.reevapp.com:8182".
-4.1.  
 5. Update the "service.php" file to point to the location of the RSS Aggregator Service.
 
 Note: If your computer does not have a C: drive, you may be able to place the "apretaste" folder in your Desktop instead.
