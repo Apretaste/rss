@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<project name="restlet-server" default="main" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
+	<!-- Sets variables which can later be used. -->
+	<!-- The value of a property is accessed via ${} -->
+	<property name="src.dir" location="src" />
+	<property name="src.api.dir" location="src-api" />
+	<property name="build.dir" location="build/bin" />
+	<property name="dist.dir" location="dist" />
+	<property name="dist.dir.lib" location="${dist.dir}/lib" />
+	<property name="docs.dir" location="docs" />
+	<property name="startup.dir" location="startupScripts" />
+
+	<path id="build.classpath">
+		<fileset dir="${dist.dir.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<!-- IVY Support - BEGIN -->
+	<property name="ivy.install.version" value="2.4.0" />
+	<condition property="ivy.home" value="${env.IVY_HOME}">
+		<isset property="env.IVY_HOME" />
+	</condition>
+	<property name="ivy.home" value="${user.home}/.ivy2" />
+	<property name="ivy.jar.dir" value="${ivy.home}/lib" />
+	<property name="ivy.jar.file" value="${ivy.jar.dir}/ivy.jar" />
+
+	<target name="download-ivy" unless="offline">
+		<mkdir dir="${ivy.jar.dir}"/>
+		<!-- download Ivy from web site so that it can be used even without any special installation -->
+		<get src="https://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.install.version}/ivy-${ivy.install.version}.jar" 
+             dest="${ivy.jar.file}" usetimestamp="true"/>
+	</target>
+
+	<target name="ivy-init" depends="download-ivy">
+		<!-- try to load ivy here from ivy home, in case the user has not already dropped
+              it into ant's lib dir (note that the latter copy will always take precedence).
+              We will not fail as long as local lib dir exists (it may be empty) and
+              ivy is in at least one of ant's lib dir or the local lib dir. -->
+		<path id="ivy.lib.path">
+			<fileset dir="${ivy.jar.dir}" includes="*.jar"/>
+
+		</path>
+		<taskdef resource="org/apache/ivy/ant/antlib.xml"
+                 uri="antlib:org.apache.ivy.ant" classpathref="ivy.lib.path"/>
+	</target>
+	<!-- IVY Support - END -->
+
+	<!-- Deletes the existing build, docs and dist directory-->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+		<delete dir="${docs.dir}" />
+		<delete dir="${dist.dir}" />
+		<delete dir="${dist.dir.lib}" />
+	</target>
+
+	<!-- Creates the  build, docs and dist directory-->
+	<target name="makedir">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${docs.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${dist.dir.lib}" />
+	</target>
+
+	<target name="ivy-resolve" depends="ivy-init" description="--> resolve dependencies with ivy">
+		<ivy:retrieve/>
+	</target>
+
+	<target name="ivy-retrieve" depends="ivy-resolve" description="--> Save dependency JAR files">
+		<ivy:retrieve pattern="${dist.dir.lib}/[artifact].[ext]"/>
+	</target>
+	
+	<target name="compile" depends="clean,makedir,ivy-retrieve">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" classpathref="build.classpath" includeantruntime="false">
+		</javac>
+	</target>
+
+	<!-- Creates Javadoc -->
+	<target name="docs" depends="compile">
+		<javadoc packagenames="src" sourcepath="${src.dir}" destdir="${docs.dir}">
+			<!-- Define which files / directory should get included, we include all -->
+			<fileset dir="${src.dir}">
+				<include name="**" />
+			</fileset>
+		</javadoc>
+	</target>
+
+	<!--Creates the deployable jar file  -->
+	<target name="jar" depends="compile">
+		<jar destfile="${dist.dir}\rssAggr.jar" basedir="${build.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="org.apretaste.rss.Main" />
+			</manifest>
+		</jar>
+		
+		<!-- Basic Configuration and Start Up Scripts -->
+		<copy todir="${dist.dir}">
+			<fileset dir="${startup.dir}">
+				<include name="**/*.*" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="main" depends="compile, jar">
+		<description>Main target</description>
+	</target>
+
+</project>
