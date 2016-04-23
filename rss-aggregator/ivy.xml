@@ -25,12 +25,6 @@
         status="release">
 	</info>
 	<dependencies>  
-		<!-- Database -->
-		<!--<dependency org="org.postgresql" name="postgresql" rev="latest.release"/>-->
-		<!--<dependency org="com.datastax.cassandra" name="cassandra-driver-core" rev="latest.milestone"/>-->
-		<dependency org="mysql" name="mysql-connector-java" rev="latest.release" />
-		<dependency org="com.h2database" name="h2" rev="latest.release" />
-		        
         <!-- HTTP Client for Validating URLs -->
         <dependency org="commons-cli" name="commons-cli" rev="latest.release"/>
         <!--<dependency org="commons-lang" name="commons-lang" rev="latest.release"/>-->
@@ -68,9 +62,6 @@
         <dependency org="com.fasterxml.jackson.core" name="jackson-databind" rev="latest.milestone"/>
         -->
 		
-		<!-- HTML Parsing -->
-		<!--<dependency org="org.jsoup" name="jsoup" rev="latest.release"/>-->
-		
 		<!-- Content Analytics by Apache Tika -->
 		<dependency org="org.apache.tika" name="tika" rev="latest.release"/>
 		<dependency org="org.apache.tika" name="tika-core" rev="latest.release"/>
@@ -95,8 +86,6 @@
         <exclude org="org.slf4j" module="slf4j-jcl"/>
         <exclude org="javax.faces"/>
         <exclude org="javax.ejb"/>
-        <exclude org="javax.jdo" module="jdo2-api"/>
-        <exclude org="net.sf.ehcache" module="ehcache"/>
         
         <!-- Remove regular Log4J jars so it is redirected to SLF4J -->
         <exclude org="log4j" module="log4j"/>
