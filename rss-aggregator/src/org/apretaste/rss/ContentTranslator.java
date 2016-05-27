@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Provided realtime translation of Article content (Title, Description).
- * Requests are cachede in order to save in Requests to the translation service
+ * Provided real-time translation of Article content (Title, Description).
+ * Requests are cached in order to save in Requests to the translation service
  * @author mark
  *
  */
