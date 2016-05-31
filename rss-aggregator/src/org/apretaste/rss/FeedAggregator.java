@@ -93,27 +93,27 @@ public class FeedAggregator implements IPropertiesDefault {
 	/**
 	 * Feeds to monitor, optimized for concurrency
 	 */
-	private SortedSet<Feed> feeds;
+	private volatile SortedSet<Feed> feeds;
 
 	/**
 	 * Set of Categories for quick access
 	 */
-	private SortedMap<String, Category> categories = new TreeMap<>();
+	private volatile SortedMap<String, Category> categories = new TreeMap<>();
 	
 	/**
 	 * Set of Categories for quick access, Key is ID
 	 */
-	private SortedMap<String, Category> categoriesById = new TreeMap<>();
+	private volatile SortedMap<String, Category> categoriesById = new TreeMap<>();
 	
 	/**
 	 * Feeds indexed by link
 	 */
-	private Map<String, Feed> feedByLink = new HashMap<>();
+	private volatile Map<String, Feed> feedByLink = new HashMap<>();
 	
 	/**
 	 * Articles indexed by Link and GUID
 	 */
-	private Map<String, Article> articleByLinkOrID = new HashMap<>();
+	private volatile Map<String, Article> articleByLinkOrID = new HashMap<>();
 
 	/**
 	 * Constructor
